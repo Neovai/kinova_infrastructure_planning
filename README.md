@@ -1,5 +1,5 @@
 # kinova_infrastructure_planning
-contains modified ros packages for setting up gazebo and moveit environemt for doing path planning with drawer for the kinova. Also contains yaml files for the drawer path.
+contains modified ros packages for setting up gazebo and moveit environment for doing path planning with drawer for the kinova. Also contains yaml files for the drawer path.
 
 follow installation instructions: https://github.com/OSUrobotics/kinova_door_opening_simulation
 
