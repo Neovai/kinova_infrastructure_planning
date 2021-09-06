@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+<root xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:gazebo="http://playerstage.sourceforge.net/gazebo/xmlschema/#gz"
+    xmlns:model="http://playerstage.sourceforge.net/gazebo/xmlschema/#model"
+	xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+	xmlns:body="http://playerstage.sourceforge.net/gazebo/xmlschema/#body"
+    xmlns:geom="http://playerstage.sourceforge.net/gazebo/xmlschema/#geom"
+    xmlns:joint="http://playerstage.sourceforge.net/gazebo/xmlschema/#joint"
+	xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+	xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+	xmlns:rendering="http://playerstage.sourceforge.net/gazebo/xmlschema/#rendering"
+    xmlns:renderable="http://playerstage.sourceforge.net/gazebo/xmlschema/#renderable"
+    xmlns:physics="http://playerstage.sourceforge.net/gazebo/xmlschema/#physics"
+	xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find kinova_description)/urdf/drawer.gazebo" />
+  <xacro:macro name="drawer" params="parent">
+
+    <!-- <link
+    name="frame_link">
+    <inertial>
+      <mass
+        value="16.831" />
+      <inertia
+        ixx="0.33129"
+        ixy="0"
+        ixz="0"
+        iyy="0.19577"
+        iyz="0"
+        izz="0.33426" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find kinova_description)/meshes/frame_link.STL" scale="0.1 0.1 0.1"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find kinova_description)/meshes/frame_link.STL" scale="0.1 0.1 0.1"/>
+      </geometry>
+    </collision>
+  </link> -->
+
+  <joint
+    name="drawer_slider"
+    type="prismatic">
+    <origin
+      xyz="-0.18053 -0.52596 0.15683"
+      rpy="-1.5708 -1.5708 0" />
+    <parent
+      link="frame_link" />
+    <child
+      link="drawer_Link" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-0.2"
+      upper="0"
+      effort="1000.0"
+      velocity="2.5" />
+    <dynamics
+      friction="0.01"
+      />
+  </joint>
+
+  <link
+    name="drawer_Link">
+    <inertial>
+      <mass
+        value="3.0911" />
+      <inertia
+        ixx="0.0194"
+        ixy="0"
+        ixz="0"
+        iyy="0"
+        iyz="0"
+        izz="0.024774" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find kinova_description)/meshes/drawer_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.75294 0.75294 0.75294 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find kinova_description)/meshes/drawer_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link
+    name="frame_link">
+    <inertial>
+      <mass
+        value="16.831" />
+      <inertia
+        ixx="0.33129"
+        ixy="0"
+        ixz="0"
+        iyy="0.19577"
+        iyz="0"
+        izz="0.33426" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find kinova_description)/meshes/frame_link.STL" scale="1 1 1"/>
+      </geometry>
+      <material
+        name="brown">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find kinova_description)/meshes/frame_link.STL" scale="1 1 1"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="connect_drawer_to_parent" type="fixed">
+    <child link="frame_link" />
+    <parent link="${parent}"/>
+<!--    <origin xyz="0 0 0" rpy="0 0 0" /> base z: 0.7425 -->
+
+    <origin xyz="0.5 0 1.2025" rpy="-1.5708 -3.1416 -1.5708" />
+  </joint>
+
+  <transmission name="tran1">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="drawer_slider">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="motor1">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+          <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+   </transmission>
+
+</xacro:macro>
+</root>
