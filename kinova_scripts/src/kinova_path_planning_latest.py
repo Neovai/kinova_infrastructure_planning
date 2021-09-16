@@ -216,6 +216,131 @@ class MoveRobot():
             self.move_gripper.execute(loaded_plan)
         else:
             raise IOError("invalid group state")
+    
+    def build_env(self, path):
+        if path == 0:
+            handle_mesh = "/home/sogol/kinova_Ws/src/kinova-ros/kinova_description/meshes/drawer_Link.STL"
+            handle_pose = PoseStamped()
+            handle_pose.header.frame_id = self.robot.get_planning_frame()
+            handle_pose.pose.position.x = 0.66
+            handle_pose.pose.position.y = -0.18
+            handle_pose.pose.position.z = 0.67
+            self.scene.add_mesh('handle', handle_pose, handle_mesh)
+            wall_pose = PoseStamped()
+            wall_pose.header.frame_id = self.robot.get_planning_frame()
+            wall_pose.pose.position.x = 0.82
+            wall_pose.pose.position.y = 0.0
+            wall_pose.pose.position.z = 0.85
+            self.scene.add_box('drawer_face', wall_pose, (.01, 1.0, 1.0))
+
+        elif path == 1:
+            handle_mesh = "/home/sogol/kinova_Ws/src/kinova-ros/kinova_description/meshes/drawer_Link.STL"
+            handle_pose = PoseStamped()
+            handle_pose.header.frame_id = self.robot.get_planning_frame()
+            handle_pose.pose.position.x = 0.66 - 0.12
+            handle_pose.pose.position.y = -0.18
+            handle_pose.pose.position.z = 0.67
+            self.scene.add_mesh('handle', handle_pose, handle_mesh)
+
+        elif path == 2:
+            wall_pose = PoseStamped()
+            wall_pose.header.frame_id = self.robot.get_planning_frame()
+            wall_pose.pose.position.x = 0.77
+            wall_pose.pose.position.y = 0.0
+            wall_pose.pose.position.z = 0.85
+            self.scene.add_box('drawer_face', wall_pose, (.01, 1.0, 1.0))
+            wall_pose = PoseStamped()
+            wall_pose.header.frame_id = self.robot.get_planning_frame()
+            wall_pose.pose.position.x = 0.60
+            wall_pose.pose.position.y = 0.0
+            wall_pose.pose.position.z = 0.86
+            self.scene.add_box('wall_b', wall_pose, (0.8, 0.5, 0.01))
+            wall_pose = PoseStamped()
+            wall_pose.header.frame_id = self.robot.get_planning_frame()
+            wall_pose.pose.position.x = 0.61
+            wall_pose.pose.position.y = -0.03
+            wall_pose.pose.position.z = 0.92
+            self.scene.add_box('wall_l', wall_pose, (0.3, 0.01, 0.1))
+            wall_pose = PoseStamped()
+            wall_pose.header.frame_id = self.robot.get_planning_frame()
+            wall_pose.pose.position.x = 0.61
+            wall_pose.pose.position.y = 0.08
+            wall_pose.pose.position.z = 0.92
+            self.scene.add_box('wall_r', wall_pose, (0.3, 0.01, 0.1))
+            wall_pose = PoseStamped()
+            wall_pose.header.frame_id = self.robot.get_planning_frame()
+            wall_pose.pose.position.x = 0.70
+            wall_pose.pose.position.y = 0.00
+            wall_pose.pose.position.z = 1.24
+            self.scene.add_box('wall_t', wall_pose, (0.1, 0.5, 0.01))
+
+        #update of path 1
+        elif path == 3:
+            self.scene.remove_world_object('wall_t')
+            wall_pose = PoseStamped()
+            wall_pose.header.frame_id = self.robot.get_planning_frame()
+            wall_pose.pose.position.x = 0.70 - .03
+            wall_pose.pose.position.y = 0.00
+            wall_pose.pose.position.z = 1.24
+            self.scene.add_box('wall_t', wall_pose, (0.1, 0.5, 0.01))
+            
+        #update of path 1
+        elif path == 4:
+            self.scene.remove_world_object('wall_t')
+            wall_pose = PoseStamped()
+            wall_pose.header.frame_id = self.robot.get_planning_frame()
+            wall_pose.pose.position.x = 0.70 - .05
+            wall_pose.pose.position.y = 0.00
+            wall_pose.pose.position.z = 1.24
+            self.scene.add_box('wall_t', wall_pose, (0.1, 0.5, 0.01))
+
+        #build safety walls
+        elif path == 5:
+            wall_pose = PoseStamped()
+            wall_pose.header.frame_id = self.robot.get_planning_frame()
+            wall_pose.pose.position.x = 0.43
+            wall_pose.pose.position.y = -0.53
+            wall_pose.pose.position.z = 1.21
+            self.scene.add_box('safety_l', wall_pose, (1.50, 0.01, 1.50)) 
+            wall_pose = PoseStamped()
+            wall_pose.header.frame_id = self.robot.get_planning_frame()
+            wall_pose.pose.position.x = 0.43
+            wall_pose.pose.position.y = 0.53
+            wall_pose.pose.position.z = 1.21
+            #self.scene.add_box('safety_r', wall_pose, (1.50, 0.01, 1.50)) 
+            wall_pose = PoseStamped()
+            wall_pose.header.frame_id = self.robot.get_planning_frame()
+            wall_pose.pose.position.x = -0.33
+            wall_pose.pose.position.y = 0.22
+            wall_pose.pose.position.z = 1.21
+            self.scene.add_box('safety_b', wall_pose, (0.01, 1.50, 1.50)) 
+
+        else:
+            raise IOError("invalid path")
+
+    def teardown_env(self, path):
+        if path == 0:
+            self.scene.remove_world_object('drawer_face')
+            self.scene.remove_world_object('handle')
+        
+        elif path == 1:
+            self.scene.remove_world_object('handle')
+        
+        elif path == 2:
+            self.scene.remove_world_object('drawer_face')
+            self.scene.remove_world_object('wall_l')
+            self.scene.remove_world_object('wall_r')
+            self.scene.remove_world_object('wall_b')
+            self.scene.remove_world_object('wall_t')
+
+        #remove safety walls
+        elif path == 3:
+            self.scene.remove_world_object('safety_l')
+            self.scene.remove_world_object('safety_r')
+            self.scene.remove_world_object('safety_b')
+        
+        else:
+            raise IOError("invalid path")
 
     def main(self):
         #try:
@@ -238,6 +363,8 @@ class MoveRobot():
 
         if(self.planning == "1"):
             #default height: .855m
+            self.build_env(5) #safety walls
+            self.build_env(0)
             rospy.loginfo("putting palm to handle [point 1 of 4]")
             current_point = [0.594897268928, (-0.00552424651151 + 0.0275), 1.08080196315, -0.0552241400824, 0.998162456525, -0.0237767228365, -0.0075280931829]
             self.go_to_goal(current_point, "point1.yaml")
@@ -256,27 +383,32 @@ class MoveRobot():
             current_point[0] = current_point[0] + .055
             current_point[2] = current_point[2] - .08 #was .081
             self.go_to_goal(current_point, "point4.yaml")
-            #self.go_to_goal(current_point, "rep.yaml") #repetitive
-           
+            self.teardown_env(0)
+
             rospy.loginfo("closing gripper")
             self.go_to_finger_joint_state([1, 0.9, 0.9], "close_gripper.yaml") #try [1.1, 0.9, 0.9] in real world
            
+            self.build_env(2)
             rospy.loginfo("pulling drawer out [point 1 of 3]")
             current_point[0] = current_point[0] - 0.04 #distance to pull drawer (<=20cm)
             self.go_to_goal(current_point, "pull_drawer1.yaml")
             
+            self.build_env(3)
             rospy.loginfo("pulling drawer out [point 2 of 3]")
             current_point[0] = current_point[0] - 0.04 #distance to pull drawer (<=20cm)
             self.go_to_goal(current_point, "pull_drawer2.yaml")
             
+            self.build_env(4)
             rospy.loginfo("pulling drawer out [point 3 of 3]")
             current_point[0] = current_point[0] - 0.04 #distance to pull drawer (<=20cm)
             self.go_to_goal(current_point, "pull_drawer3.yaml")
-           
+            self.teardown_env(2)
+
             rospy.loginfo("releasing handle")
             self.go_to_finger_joint_state([0.3, 0.3, 0.3], "release_handle.yaml")
             #self.go_to_finger_state('Open')
            
+            self.build_env(1)
             rospy.loginfo("moving gripper from handle (test_point2)")
             test_point = [ 0.55645217799, 0.0265633405959, 1.02602250364, -0.0552636649865, 0.998142031898, -0.0243654184542, -0.00804598493432]
             self.go_to_goal(test_point, "distance_handle.yaml")
@@ -284,6 +416,8 @@ class MoveRobot():
             rospy.loginfo("going to home state")
             self.go_to_arm_joint_state("Home", "return_home.yaml")
             rospy.loginfo("finished")
+            self.teardown_env(1)
+            self.teardown_env(3) #safety walls
 
         elif(self.planning == "0"):
             rospy.loginfo("putting palm to handle [point 1 of 4] (yaml version)")
