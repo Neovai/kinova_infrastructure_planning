@@ -17,3 +17,6 @@ additional packages that were installed from source in kinova_ws/src (if previou
 To Change Robot speed:
 - go to kinova-ros/kinova_moveit/robot_configs/j2s7s300_moveit_config/config
 - modify the joint velocity values in joint_limits.yaml file (2 is a good speed)
+
+If sudo apt-get install moveit* doesn't work:
+- try  sudo apt install ros-melodic-moveit 
