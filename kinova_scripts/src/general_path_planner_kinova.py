@@ -74,10 +74,16 @@ class MoveRobot():
         # To read from redirected ROS Topic (Gazebo launch use)
 #        joint_state_topic = ['joint_states:=/j2s7s300/joint_states']
 #        moveit_commander.roscpp_initialize(joint_state_topic)
-#        rospy.init_node('move-kinova', anonymous=False)
+#        rospy.init_node('move_kinova', anonymous=False)
 #        moveit_commander.roscpp_initialize(sys.argv)
         
-        # for real/virtual launch use
+        # For real robot launch use
+#        joint_state_topic = ['joint_states:=/j2s7s300_driver/out/joint_state']
+#        moveit_commander.roscpp_initialize(joint_state_topic)
+#        rospy.init_node('move_kinova', anonymous=False)
+#        moveit_commander.roscpp_initialize(sys.argv)
+        
+        # for virtual robot launch use
         moveit_commander.roscpp_initialize(sys.argv)
         rospy.init_node('move_kinova', anonymous=True)
 
