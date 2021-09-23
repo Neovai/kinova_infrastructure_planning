@@ -13,3 +13,7 @@ additional packages that were installed from source in kinova_ws/src (if previou
  - http://wiki.ros.org/ros_controllers
  - http://wiki.ros.org/urdf_geometry_parser
  - http://wiki.ros.org/code_coverage
+
+To Change Robot speed:
+- go to kinova-ros/kinova_moveit/robot_configs/j2s7s300_moveit_config/config
+- modify the joint velocity values in joint_limits.yaml file (2 is a good speed)
